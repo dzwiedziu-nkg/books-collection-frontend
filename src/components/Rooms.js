@@ -11,7 +11,7 @@ class Rooms extends React.Component {
   }
 
   render() {
-    const { isLoading, isError, repositories } = this.props;
+    const { isLoading, isError, repositories } = this.props.rooms;
 
     return (
       <div>

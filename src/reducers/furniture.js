@@ -4,23 +4,24 @@
  * src/container/App.js accordingly.
  */
 import {} from '../actions/const';
-import * as actions from '../actions/ajax';
 
-const initialState = { isLoading: false, isError: false, repositories: [] };
+const initialState = {};
 
 function reducer(state = initialState, action) {
   /* Keep the reducer clean - do not mutate the original state. */
   // const nextState = Object.assign({}, state);
 
   switch (action.type) {
-    case actions.GET_DATA_REQUESTED:
-      return { ...state, isLoading: true };
-    case actions.GET_DATA_DONE:
-      return { ...state, isLoading: false, repositories: action.payload };
-    case actions.GET_DATA_FAILED:
-      return { ...state, isLoading: false, isError: true };
-    default:
+    /*
+    case YOUR_ACTION: {
+      // Modify next state depending on the action and return it
+      return nextState;
+    }
+    */
+    default: {
+      /* Return original state if no actions were consumed. */
       return state;
+    }
   }
 }
 

@@ -1,13 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import reducers from '../reducers/rooms';
+import reducers from '../reducers';
 import * as actions from '../actions/ajax';
 
 const epicMiddleware = createEpicMiddleware(actions.getDataEpic);
 function reduxStore(initialState) {
   const store = createStore(
-    reducers,
-    { isLoading: false, isError: false, repositories: [], ...initialState },
+    reducers, initialState,
     applyMiddleware(epicMiddleware), window.devToolsExtension && window.devToolsExtension()
   );
 

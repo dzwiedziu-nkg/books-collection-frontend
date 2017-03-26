@@ -10,13 +10,13 @@ import React, {
 } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {} from '../actions/';
+import '../actions/';
 import Main from '../components/App';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
-    const { actions } = this.props;
-    return <Main actions={actions} />;
+    const {actions, rooms, furniture} = this.props;
+    return <Main actions={actions} rooms={rooms} furniture={furniture}/>;
   }
 }
 /* Populated by react-webpack-redux:reducer
@@ -25,11 +25,14 @@ class App extends Component {
  *       adjust it here.
  */
 App.propTypes = {
-  actions: PropTypes.shape({})
+  actions: PropTypes.shape({}),
+  rooms: PropTypes.shape({}),
+  furniture: PropTypes.shape({})
 };
-function mapStateToProps(state) { // eslint-disable-line no-unused-vars
+function mapStateToProps(state) {
+  // eslint-disable-line no-unused-vars
   /* Populated by react-webpack-redux:reducer */
-  const props = {};
+  const props = { rooms: state.rooms, furniture: state.furniture };
   return props;
 }
 function mapDispatchToProps(dispatch) {
