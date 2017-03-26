@@ -1,9 +1,15 @@
-import { createStore } from 'redux';
-import reducers from '../reducers';
+import { createStore, applyMiddleware } from 'redux';
+import { createEpicMiddleware } from 'redux-observable';
+import reducers from '../reducers/rooms';
+import * as actions from '../actions/ajax';
 
+const epicMiddleware = createEpicMiddleware(actions.getDataEpic);
 function reduxStore(initialState) {
-  const store = createStore(reducers, initialState,
-    window.devToolsExtension && window.devToolsExtension());
+  const store = createStore(
+    reducers,
+    { isLoading: false, isError: false, repositories: [], ...initialState },
+    applyMiddleware(epicMiddleware), window.devToolsExtension && window.devToolsExtension()
+  );
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
