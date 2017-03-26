@@ -16,15 +16,12 @@ class WebpackDistConfig extends WebpackBaseConfig {
       devtool: 'source-map',
       entry: [
         './client.js'
-      ],
-      plugins: [
-        new webpack.DefinePlugin({
-          'process.env.NODE_ENV': '"production"'
-        }),
-        new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.NoErrorsPlugin()
       ]
     };
+
+    this.config.plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}));
+    this.config.plugins.push(new webpack.optimize.AggressiveMergingPlugin());
+    this.config.plugins.push(new webpack.NoEmitOnErrorsPlugin());
 
     // Deactivate hot-reloading if we run dist build on the dev server
     this.config.devServer.hot = false;

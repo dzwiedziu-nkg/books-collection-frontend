@@ -3,6 +3,7 @@
 /**
  * Webpack configuration base class
  */
+const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
 
@@ -114,7 +115,7 @@ class WebpackBaseConfig {
             ]
           },
           {
-            test: /\.(png|jpg|gif|mp4|ogg|svg|woff|woff2)$/,
+            test: /\.(png|jpg|gif|mp4|ogg|svg|woff|woff2|eot|ttf)$/,
             loader: 'file-loader'
           },
           {
@@ -206,7 +207,11 @@ class WebpackBaseConfig {
         filename: 'app.js',
         publicPath: './assets/'
       },
-      plugins: [],
+      plugins: [
+        new webpack.ProvidePlugin({
+          jQuery: 'jquery'
+        })
+      ],
       resolve: {
         alias: {
           actions: `${this.srcPathAbsolute}/actions/`,
