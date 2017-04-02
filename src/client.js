@@ -1,32 +1,30 @@
 import 'rxjs';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { Provider } from 'react-redux';
-import App from './containers/App';
+import { createBrowserHistory } from 'history';
+import { syncHistoryWithStore } from 'react-router-redux';
+import Root from './containers/Root';
 import configureStore from './stores';
 
 
 const store = configureStore();
+const history = syncHistoryWithStore(createBrowserHistory(), store);
 
-ReactDOM.render(
+render(
   <AppContainer>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Root store={store} history={history} />
   </AppContainer>,
   document.getElementById('app')
 );
 
 if (module.hot) {
-  module.hot.accept('./containers/App', () => {
-    const NextApp = require('./containers/App').default; // eslint-disable-line global-require
+  module.hot.accept('./containers/Root', () => {
+    const NextApp = require('./containers/Root').default; // eslint-disable-line global-require
 
-    ReactDOM.render(
+    render(
       <AppContainer>
-        <Provider store={store}>
-          <NextApp />
-        </Provider>
+        <NextApp store={store} history={history} />
       </AppContainer>,
       document.getElementById('app')
     );
