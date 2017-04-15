@@ -100,12 +100,9 @@ class WebpackBaseConfig {
         rules: [
           {
             enforce: 'pre',
-            test: /\.js?$/,
+            test: /\.(js|jsx)$/,
             include: this.srcPathAbsolute,
-            loader: 'babel-loader',
-            query: {
-              presets: ['es2015']
-            }
+            loader: 'babel-loader'
           },
           {
             test: /^.((?!cssmodule).)*\.css$/,
