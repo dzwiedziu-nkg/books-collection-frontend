@@ -1,28 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as actions from '../actions/crud';
-import { select } from 'redux-crud-store';
-
 
 class Rooms extends React.Component {
-  componentWillMount() {
-    const { rooms, dispatch } = this.props;
-    if (rooms.needsFetch) {
-      dispatch(rooms.fetch)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { rooms } = nextProps;
-    const { dispatch } = this.props;
-    if (rooms.needsFetch) {
-      dispatch(rooms.fetch);
-    }
-  }
+  static propTypes = {
+    isLoading: PropTypes.bool,
+    data: PropTypes.array
+  };
 
   render() {
-    const { isLoading, needsFetch, data } = this.props.rooms;
+    const { isLoading, data } = this.props;
 
     if (isLoading) {
       return <div>
@@ -41,11 +27,5 @@ class Rooms extends React.Component {
     }
   }
 }
-
-function mapStateToProps(state, ownProps) {
-  return { rooms: select(actions.fetchEntities('rooms'), state.models) }
-}
-
-Rooms = connect(mapStateToProps)(Rooms);
 
 export default Rooms;
