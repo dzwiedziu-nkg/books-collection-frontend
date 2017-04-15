@@ -13,8 +13,8 @@ import Main from '../components/App';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
-    const {actions, rooms, furniture} = this.props;
-    return <Main actions={actions} rooms={rooms} furniture={furniture}/>;
+    const {actions, rooms, furniture, children} = this.props;
+    return <Main actions={actions} rooms={rooms} furniture={furniture} children={children}/>;
   }
 }
 /* Populated by react-webpack-redux:reducer
