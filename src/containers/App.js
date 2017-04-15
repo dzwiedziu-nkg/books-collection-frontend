@@ -1,42 +1,34 @@
-/* CAUTION: When using the generators, this file is modified in some places.
- *          This is done via AST traversal - Some of your formatting may be lost
- *          in the process - no functionality should be broken though.
- *          This modifications only run once when the generator is invoked - if
- *          you edit them, they are not updated again.
- */
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+import React from 'react';
 import { connect } from 'react-redux';
-import '../actions/';
-import Main from '../components/App';
-/* Populated by react-webpack-redux:reducer */
-class App extends Component {
+import * as actions from '../actions/config';
+import Main from '../components/App'
+
+class App extends React.Component {
+  componentDidMount() {
+    const { getConfigRequested } = this.props;
+    getConfigRequested();
+  }
+
   render() {
-    const {actions, rooms, furniture, children} = this.props;
-    return <Main actions={actions} rooms={rooms} furniture={furniture} children={children}/>;
+    const {config, children} = this.props;
+    const {isLoading, options} = config;
+    if (config['isLoading']) {
+      return <p>loading...</p>;
+    } else {
+      const BRAND_TITLE = options['BRAND_TITLE'];
+      return <Main brand_name={BRAND_TITLE} children={children}/>;
+    }
   }
 }
-/* Populated by react-webpack-redux:reducer
- *
- * HINT: if you adjust the initial type of your reducer, you will also have to
- *       adjust it here.
- */
-App.propTypes = {
-  actions: PropTypes.shape({}),
-  rooms: PropTypes.shape({}),
-  furniture: PropTypes.shape({})
+
+const mapStateToProps = (state) => {
+  return state;
 };
-function mapStateToProps(state) {
-  // eslint-disable-line no-unused-vars
-  /* Populated by react-webpack-redux:reducer */
-  const props = { rooms: state.rooms, furniture: state.furniture };
-  return props;
-}
-function mapDispatchToProps(dispatch) {
-  /* Populated by react-webpack-redux:action */
-  const actions = {};
-  const actionMap = { actions: bindActionCreators(actions, dispatch) };
-  return actionMap;
-}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getConfigRequested: () => dispatch(actions.getConfigRequested())
+  }
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);

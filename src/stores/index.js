@@ -2,6 +2,7 @@ import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, compose } from 'redux'
 import { crudSaga, ApiClient } from 'redux-crud-store'
 import reducers from '../reducers';
+import rootSaga from './sagas'
 
 const client = new ApiClient({ basePath: '/api' });
 const crudMiddleware = createSagaMiddleware();
@@ -23,7 +24,7 @@ function reduxStore(routerMiddleware, initialState) {
     });
   }
 
-  crudMiddleware.run(crudSaga(client));
+  crudMiddleware.run(rootSaga(client));
 
   return store;
 }

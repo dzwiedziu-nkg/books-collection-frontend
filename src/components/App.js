@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'bootstrap';
 import '../styles/App.css';
-import Rooms from './Rooms';
 
 class AppComponent extends React.Component {
 
   static propTypes = {
+    brand_name: PropTypes.string,
     children: PropTypes.node
   };
 
@@ -14,8 +14,9 @@ class AppComponent extends React.Component {
     return (
       <div className="container">
         <div className="jumbotron">
-          {this.props.children}
+          <h1>{this.props.brand_name}</h1>
         </div>
+        {this.props.children}
       </div>
     );
   }
