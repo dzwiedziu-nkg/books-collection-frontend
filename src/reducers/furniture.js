@@ -7,7 +7,7 @@ import {} from '../actions/const';
 
 const initialState = {};
 
-function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   /* Keep the reducer clean - do not mutate the original state. */
   // const nextState = Object.assign({}, state);
 
@@ -24,5 +24,3 @@ function reducer(state = initialState, action) {
     }
   }
 }
-
-module.exports = reducer;
