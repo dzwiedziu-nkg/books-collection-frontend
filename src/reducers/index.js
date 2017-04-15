@@ -12,6 +12,7 @@ import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import rooms from '../reducers/rooms.js';
 import furniture from '../reducers/furniture.js';
+
 const reducers = { routing, rooms, furniture };
 const combined = combineReducers(reducers);
 export default combined;

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
 import * as actions from '../actions/ajax';
 import { reducer } from '../reducers/rooms';
