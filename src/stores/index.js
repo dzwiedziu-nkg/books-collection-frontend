@@ -1,14 +1,15 @@
-import { createStore, applyMiddleware } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
+import createSagaMiddleware from 'redux-saga';
+import { createStore, applyMiddleware, compose } from 'redux'
+import { crudSaga, ApiClient } from 'redux-crud-store'
 import reducers from '../reducers';
-import * as actions from '../actions/ajax';
 
-const epicMiddleware = createEpicMiddleware(actions.getDataEpic);
+const client = new ApiClient({ basePath: '/api' });
+const crudMiddleware = createSagaMiddleware();
 
 function reduxStore(routerMiddleware, initialState) {
   const store = createStore(
     reducers, initialState,
-    applyMiddleware(epicMiddleware, routerMiddleware),
+    applyMiddleware(crudMiddleware, routerMiddleware),
     window.devToolsExtension && window.devToolsExtension()
   );
 
@@ -21,6 +22,8 @@ function reduxStore(routerMiddleware, initialState) {
       store.replaceReducer(nextReducer);
     });
   }
+
+  crudMiddleware.run(crudSaga(client));
 
   return store;
 }

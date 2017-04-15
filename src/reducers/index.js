@@ -10,9 +10,8 @@
 /* Populated by react-webpack-redux:reducer */
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import rooms from '../reducers/rooms.js';
-import furniture from '../reducers/furniture.js';
+import { crudReducer } from 'redux-crud-store'
 
-const reducers = { routing, rooms, furniture };
+const reducers = { routing, models: crudReducer };
 const combined = combineReducers(reducers);
 export default combined;

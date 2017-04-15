@@ -1,3 +1,4 @@
+import 'babel-polyfill'; // needed for IE 11, Edge 12, Safari 9
 import 'rxjs';
 import React from 'react';
 import { render } from 'react-dom';

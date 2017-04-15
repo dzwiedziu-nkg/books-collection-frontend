@@ -1,41 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect, Provider } from 'react-redux';
-import * as actions from '../actions/ajax';
-import { reducer } from '../reducers/rooms';
+import { connect } from 'react-redux';
+import * as actions from '../actions/crud';
+import { select } from 'redux-crud-store';
 
 
 class Rooms extends React.Component {
-  componentDidMount() {
-    const { getDataRequested } = this.props;
-    getDataRequested();
+  componentWillMount() {
+    const { rooms, dispatch } = this.props;
+    if (rooms.needsFetch) {
+      dispatch(rooms.fetch)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { rooms } = nextProps;
+    const { dispatch } = this.props;
+    if (rooms.needsFetch) {
+      dispatch(rooms.fetch);
+    }
   }
 
   render() {
-    const { isLoading, isError, repositories } = this.props.rooms;
+    const { isLoading, needsFetch, data } = this.props.rooms;
 
-    return (
-      <div>
-        {repositories.map((item, index) => {
-          return (<div key={index}>
-            {item.name}
-          </div>);
-        })}
+    if (isLoading) {
+      return <div>
+        <p>loading...</p>
       </div>
-    );
+    } else {
+      return (
+        <div>
+          {data.map((item, index) => {
+            return (<div key={index}>
+              {item.name}
+            </div>);
+          })}
+        </div>
+      );
+    }
   }
 }
 
-const mapStateToProps = (state) => {
-  return state;
-};
+function mapStateToProps(state, ownProps) {
+  return { rooms: select(actions.fetchEntities('rooms'), state.models) }
+}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getDataRequested: () => dispatch(actions.getDataRequested())
-  };
-};
-
-Rooms = connect(mapStateToProps, mapDispatchToProps)(Rooms);
+Rooms = connect(mapStateToProps)(Rooms);
 
 export default Rooms;
