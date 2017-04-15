@@ -4,10 +4,12 @@ import reducers from '../reducers';
 import * as actions from '../actions/ajax';
 
 const epicMiddleware = createEpicMiddleware(actions.getDataEpic);
-function reduxStore(initialState) {
+
+function reduxStore(routerMiddleware, initialState) {
   const store = createStore(
     reducers, initialState,
-    applyMiddleware(epicMiddleware), window.devToolsExtension && window.devToolsExtension()
+    applyMiddleware(epicMiddleware, routerMiddleware),
+    window.devToolsExtension && window.devToolsExtension()
   );
 
   if (module.hot) {

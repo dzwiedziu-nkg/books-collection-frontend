@@ -1,14 +1,14 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router';
+import { ConnectedRouter} from 'react-router-redux'
 import routes from '../routes';
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
-    <Router history={history} >
+    <ConnectedRouter history={history} >
       {routes}
-    </Router>
+    </ConnectedRouter>
   </Provider>
 );
 

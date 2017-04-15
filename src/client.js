@@ -2,14 +2,15 @@ import 'rxjs';
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { createBrowserHistory } from 'history';
-import { syncHistoryWithStore } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory'
+import { routerMiddleware } from 'react-router-redux'
 import Root from './containers/Root';
 import configureStore from './stores';
 
 
-const store = configureStore();
-const history = syncHistoryWithStore(createBrowserHistory(), store);
+const history = createHistory();
+const middleware = routerMiddleware(history);
+const store = configureStore(middleware, {});
 
 render(
   <AppContainer>
