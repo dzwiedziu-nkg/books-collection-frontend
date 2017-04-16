@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tile from './basic/Tile';
 
 class Rooms extends React.Component {
   static propTypes = {
@@ -9,36 +10,6 @@ class Rooms extends React.Component {
 
   render() {
     const { isLoading, data } = this.props;
-
-    const squareStyle = {
-      float: 'left',
-      position: 'relative',
-      width: '100%',
-      paddingBottom : '100%',
-      overflow: 'hidden',
-      backgroundColor: 'silver'
-    };
-
-    const contentStyle = {
-      position: 'absolute',
-      height: '80%',
-      width: '90%',
-      margin: '10% 5%'
-    };
-
-    const tableStyle = {
-      display: 'table',
-      height: '100%',
-      width: '100%'
-    };
-
-    const tableCellStyle = {
-      display: 'table-cell',
-      verticalAlign: 'middle',
-      textAlign: 'center',
-      height: '100%',
-      width: '100%'
-    };
 
     if (isLoading) {
       return <div>
@@ -50,17 +21,9 @@ class Rooms extends React.Component {
           <div className="row">
             {data.map((item, index) => {
               return (
-                <div key={index} className="col-xs-6">
-                  <div style={squareStyle}>
-                    <div style={contentStyle}>
-                      <div style={tableStyle}>
-                        <div style={tableCellStyle}>
-                          <h2>{item.name}</h2>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Tile key={index} color='silver' width='6'>
+                  <h2>{item.name}</h2>
+                </Tile>
               );
             })}
           </div>
