@@ -5,7 +5,12 @@ export default class Tile extends React.Component {
   static propTypes = {
     color: PropTypes.string,
     children: PropTypes.node,
-    width: PropTypes.integer
+    width: PropTypes.number
+  };
+
+  static defaultProps = {
+    color: 'silver',
+    width: 1
   };
 
   render() {

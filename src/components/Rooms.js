@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tile from './basic/Tile';
+import Row from './basic/Row';
 
 class Rooms extends React.Component {
   static propTypes = {
@@ -16,19 +17,13 @@ class Rooms extends React.Component {
         <p>loading...</p>
       </div>
     } else {
-      return (
-        <div>
-          <div className="row">
-            {data.map((item, index) => {
-              return (
-                <Tile key={index} color='silver' width='6'>
-                  <h2>{item.name}</h2>
-                </Tile>
-              );
-            })}
-          </div>
-        </div>
-      );
+
+      let tiles = [];
+      for (let i = 0; i < data.length; i++) {
+        tiles[i] = <Tile color='silver' width={6}><h2>{data[i].name}</h2></Tile>;
+      }
+
+      return <Row tiles={tiles}/>;
     }
   }
 }
