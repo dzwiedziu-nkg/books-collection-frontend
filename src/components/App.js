@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import 'bootstrap';
 import '../styles/App.css';
 
@@ -14,7 +15,7 @@ class AppComponent extends React.Component {
     return (
       <div className="container">
         <div className="jumbotron">
-          <h1>{this.props.brand_name}</h1>
+          <h1><Link to="/">{this.props.brand_name}</Link></h1>
         </div>
         {this.props.children}
       </div>
