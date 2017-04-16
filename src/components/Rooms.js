@@ -1,7 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Tile from './basic/Tile';
-import Row from './basic/Row';
+import Tiles from './basic/Tiles';
+
+class Room extends React.Component {
+  static propTypes = {
+    width: PropTypes.number,
+    data: PropTypes.object
+  };
+
+  render() {
+    const { data, width } = this.props;
+    const { id, name } = data;
+    return (
+      <Tile color='silver' width={width}><h2><Link to={`/${id}/`}>{name}</Link></h2></Tile>
+    );
+  }
+}
 
 class Rooms extends React.Component {
   static propTypes = {
@@ -17,13 +33,9 @@ class Rooms extends React.Component {
         <p>loading...</p>
       </div>
     } else {
-
-      let tiles = [];
-      for (let i = 0; i < data.length; i++) {
-        tiles[i] = <Tile color='silver' width={6}><h2>{data[i].name}</h2></Tile>;
-      }
-
-      return <Row tiles={tiles}/>;
+      return (
+        <Tiles cols={2} items={data} renderer={Room}/>
+      );
     }
   }
 }
