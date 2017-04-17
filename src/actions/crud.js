@@ -6,18 +6,18 @@ export function fetchEntities(model, params = {}) {
   return fetchCollection(model, `/${model}`, params)
 }
 
-export function fetchEntity(id, params = {}) {
-  return fetchRecord(model, id, `${model}/${id}`, params)
+export function fetchEntity(model, id, params = {}) {
+  return fetchRecord(model, id, `/${model}/${id}/`, params)
 }
 
-export function createEntity(data = {}) {
+export function createEntity(model, data = {}) {
   return createRecord(model, model, data)
 }
 
-export function updateEntity(id, data = {}) {
+export function updateEntity(model, id, data = {}) {
   return updateRecord(model, id, `${model}/${id}`, data)
 }
 
-export function deleteEntity(id) {
+export function deleteEntity(model, id) {
   return deleteRecord(model, id, `${model}/${id}`)
 }
