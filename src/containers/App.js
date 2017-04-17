@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/crud';
 import { select } from 'redux-crud-store';
 import { withRouter } from 'react-router-dom';
-import Main from '../components/App'
+import Main from '../components/App';
+import { setEditMode } from '../actions/mode';
 
 class App extends React.Component {
   componentWillMount() {
@@ -23,17 +24,31 @@ class App extends React.Component {
 
   render() {
     const { isLoading, data } = this.props.config;
+    const { edit, onEditChange } = this.props;
+
     if (isLoading) {
       return <p>loading...</p>;
     } else {
       const BRAND_TITLE = data[0]['value'];
-      return <Main brand_name={BRAND_TITLE} children={this.props.children}/>;
+      return <Main brand_name={BRAND_TITLE} children={this.props.children} edit={edit} onEditChange={onEditChange}/>;
     }
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  return { config: select(actions.fetchEntities('config'), state.models) }
+  return {
+    config: select(actions.fetchEntities('config'), state.models),
+    edit: state.mode.edit
+  }
 }
 
-export default withRouter(connect(mapStateToProps)(App));
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    onEditChange: (editMode) => {
+      dispatch(setEditMode(editMode))
+    }
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
