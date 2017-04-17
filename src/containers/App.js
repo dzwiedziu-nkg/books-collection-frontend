@@ -29,7 +29,7 @@ class App extends React.Component {
     if (isLoading) {
       return <p>loading...</p>;
     } else {
-      const BRAND_TITLE = data[0]['value'];
+      const BRAND_TITLE = data[0]['value']; // TODO: get from config
       return <Main brand_name={BRAND_TITLE} children={this.props.children} edit={edit} onEditChange={onEditChange}/>;
     }
   }

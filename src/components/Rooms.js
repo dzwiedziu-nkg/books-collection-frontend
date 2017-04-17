@@ -13,20 +13,28 @@ class Room extends React.Component {
   render() {
     const { data, width } = this.props;
     const { id, name } = data;
-    return (
-      <Tile color='silver' width={width}><h2><Link to={`/${id}/`}>{name}</Link></h2></Tile>
-    );
+    if (name === '{add}') {
+      return (
+        <Tile color='silver' width={width}><h2><Link to={`/add/`}><span className="glyphicon glyphicon-plus-sign"/></Link></h2></Tile>
+      );
+    } else {
+      return (
+        <Tile color='silver' width={width}><h2><Link to={`/${id}/`}>{name}</Link></h2></Tile>
+      );
+    }
   }
 }
 
 class Rooms extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    data: PropTypes.array
+    data: PropTypes.array,
+    edit: PropTypes.bool,
+    cols: PropTypes.number
   };
 
   render() {
-    const { isLoading, data } = this.props;
+    const { isLoading, data, edit } = this.props;
 
     if (isLoading) {
       return <div>
@@ -34,7 +42,7 @@ class Rooms extends React.Component {
       </div>
     } else {
       return (
-        <Tiles cols={2} items={data} renderer={Room}/>
+        <Tiles cols={2} items={data} renderer={Room} edit={edit}/>
       );
     }
   }
