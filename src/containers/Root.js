@@ -3,12 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { ConnectedRouter} from 'react-router-redux'
-import routes from '../routes';
+import { Route, IndexRoute, Switch } from 'react-router';
+import App from './App';
+import Rooms from './Rooms';
+import Furniture from './Furniture';
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
     <ConnectedRouter history={history} >
-      {routes}
+      <App>
+        <Route exact path="/" component={Rooms}/>
+        <Route path="/:room/" component={Furniture}/>
+      </App>
     </ConnectedRouter>
   </Provider>
 );
