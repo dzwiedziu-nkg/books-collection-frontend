@@ -36,11 +36,15 @@ export default class Tiles extends React.Component {
       pos++;
     }
 
+    const rowSeparatorStyle = {
+      marginTop: '30px'
+    };
+
     return (
       <div>
         {e.map((item, index) => {
           return (
-            <div key={index} className="row">
+            <div key={index} className="row" style={index > 0 ? rowSeparatorStyle : {}}>
               {item.map((subitem, subindex) => {
                 return (<div key={subindex}>{subitem}</div>);
               })}
