@@ -7,11 +7,13 @@ import { Route, IndexRoute, Switch } from 'react-router';
 import App from './App';
 import Rooms from './Rooms';
 import Furniture from './Furniture';
+import Breadcrumb from './Breadcrumb';
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
     <ConnectedRouter history={history} >
       <App>
+        <Breadcrumb/>
         <Route exact path="/" component={Rooms}/>
         <Route path="/:room/" component={Furniture}/>
       </App>
