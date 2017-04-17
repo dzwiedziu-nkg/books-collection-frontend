@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/crud';
 import { select } from 'redux-crud-store';
+import { withRouter } from 'react-router-dom';
 import Main from '../components/App'
 
 class App extends React.Component {
@@ -35,4 +36,4 @@ function mapStateToProps(state, ownProps) {
   return { config: select(actions.fetchEntities('config'), state.models) }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));
