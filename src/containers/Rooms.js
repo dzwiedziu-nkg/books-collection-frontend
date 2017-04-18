@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/crud';
 import { select } from 'redux-crud-store';
-import Main from '../components/Rooms'
+import Main from '../components/Rooms';
 
 
 class Rooms extends React.Component {
