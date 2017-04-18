@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import 'bootstrap';
+import './basic/EditButton';
 import '../styles/App.css';
+import EditButton from "./basic/EditButton";
 
 class AppComponent extends React.Component {
 
@@ -29,19 +31,11 @@ class AppComponent extends React.Component {
 
   render() {
     const { edit } = this.props;
-    const editIconStyle = {
-      fontSize: '24px',
-      color: edit ? 'black' : 'silver'
-    };
 
     return (
       <div className="container">
         <div className="jumbotron">
-          <div className='btn-toolbar pull-right'>
-            <div className='btn-group'>
-              <spam className="glyphicon glyphicon-cog" aria-hidden="true" onClick={this.handleClick} style={editIconStyle}/>
-            </div>
-          </div>
+          <EditButton active={edit} onEditClick={this.handleClick}/>
           <h1><Link to="/">{this.props.brand_name}</Link></h1>
         </div>
         {this.props.children}
