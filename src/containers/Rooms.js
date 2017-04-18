@@ -7,14 +7,14 @@ import Main from '../components/Rooms'
 
 class Rooms extends React.Component {
   componentWillMount() {
-    const { config, rooms, dispatch } = this.props;
+    const { rooms, dispatch } = this.props;
     if (rooms.needsFetch) {
       dispatch(rooms.fetch)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { config, rooms } = nextProps;
+    const { rooms } = nextProps;
     const { dispatch } = this.props;
     if (rooms.needsFetch) {
       dispatch(rooms.fetch);
@@ -24,16 +24,16 @@ class Rooms extends React.Component {
   render() {
     const { isLoading, data } = this.props.rooms;
     const { edit } = this.props;
-    const { cols } = 2; // TODO: get from config
+    const { ROOM_COLS } = parseInt(this.props.config);
 
-    return <Main isLoading={isLoading} data={data} edit={edit} cols={cols}/>
+    return <Main isLoading={isLoading} data={data} edit={edit} cols={ROOM_COLS}/>
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     edit: state.mode.edit,
-    config: select(actions.fetchEntities('config'), state.models),
+    config: state.config,
     rooms: select(actions.fetchEntities('rooms'), state.models)
   }
 }

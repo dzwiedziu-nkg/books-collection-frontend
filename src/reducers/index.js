@@ -12,7 +12,8 @@ import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import { crudReducer } from 'redux-crud-store'
 import { reducer as mode } from './mode'
+import { reducer as config } from './config'
 
-const reducers = { routing, models: crudReducer, mode };
+const reducers = { routing, models: crudReducer, mode, config };
 const combined = combineReducers(reducers);
 export default combined;

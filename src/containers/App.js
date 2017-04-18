@@ -5,39 +5,50 @@ import { select } from 'redux-crud-store';
 import { withRouter } from 'react-router-dom';
 import Main from '../components/App';
 import { setEditMode } from '../actions/mode';
+import { loadConfig } from '../actions/config';
 
 class App extends React.Component {
   componentWillMount() {
-    const { config, dispatch } = this.props;
-    if (config.needsFetch) {
-      dispatch(config.fetch)
+    const { configJson, dispatch } = this.props;
+    if (configJson.needsFetch) {
+      dispatch(configJson.fetch)
     }
+    this.loadConfigIfNeed(configJson);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { config } = nextProps;
+    const { configJson } = nextProps;
     const { dispatch } = this.props;
-    if (config.needsFetch) {
-      dispatch(config.fetch);
+    if (configJson.needsFetch) {
+      dispatch(configJson.fetch);
+    }
+    this.loadConfigIfNeed(configJson);
+  }
+
+  // TODO: should be load via ApiCall method and parsed by callback after ApiCall success
+  loadConfigIfNeed(configJson) {
+    const { config, loadConfig } = this.props;
+    if (config.isLoading && !configJson.isLoading) {
+      loadConfig(configJson.data);
     }
   }
 
   render() {
-    const { isLoading, data } = this.props.config;
+    const { isLoading, BRAND_TITLE } = this.props.config;
     const { edit, onEditChange } = this.props;
 
     if (isLoading) {
       return <p>loading...</p>;
     } else {
-      const BRAND_TITLE = data[0]['value']; // TODO: get from config
-      return <Main brand_name={BRAND_TITLE} children={this.props.children} edit={edit} onEditChange={onEditChange}/>;
+      return (<Main brand_name={BRAND_TITLE} children={this.props.children} edit={edit} onEditChange={onEditChange}/>);
     }
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    config: select(actions.fetchEntities('config'), state.models),
+    config: state.config,
+    configJson: select(actions.fetchEntities('config'), state.models),
     edit: state.mode.edit
   }
 }
@@ -47,6 +58,9 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     onEditChange: (editMode) => {
       dispatch(setEditMode(editMode))
+    },
+    loadConfig: (configJson) => {
+      dispatch(loadConfig(configJson))
     }
   }
 }
