@@ -1,6 +1,6 @@
 import {
   fetchCollection, fetchRecord, createRecord, updateRecord, deleteRecord
-} from 'redux-crud-store'
+} from 'redux-crud-store';
 
 export function fetchEntities(model, params = {}) {
   return fetchCollection(model, `/${model}`, params)
@@ -15,9 +15,9 @@ export function createEntity(model, data = {}) {
 }
 
 export function updateEntity(model, id, data = {}) {
-  return updateRecord(model, id, `/${model}/${id}`, data)
+  return updateRecord(model, id, `/${model}/${id}/`, data)
 }
 
 export function deleteEntity(model, id) {
-  return deleteRecord(model, id, `/${model}/${id}`)
+  return deleteRecord(model, id, `/${model}/${id}/`)
 }
