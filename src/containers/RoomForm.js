@@ -11,6 +11,8 @@ class RoomForm extends React.Component {
     this.state = this.loadToState();
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentWillMount() {
@@ -46,13 +48,10 @@ class RoomForm extends React.Component {
     let state = {name: '', cols: 2, colspan: 1};
     if (this.props.edit) {
       if (this.props.room.isLoading) {
-        console.log('loadToState - false');
         return {...state, ready: false};
       }
-      console.log('loadToState - true');
       return {...this.props.room.data, ready: true};
     } else {
-      console.log('loadToState - true');
       return {...state, ready: true};
     }
   }
@@ -62,7 +61,18 @@ class RoomForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    alert('A name was submitted: ' + this.state.name);
+    event.preventDefault();
+  }
+
+  handleCancel(event) {
+    event.preventDefault();
+    window.history.back();
+  }
+
+  handleDelete(event) {
+    //window.history.back();
+    alert('Delete: ' + this.state.name);
     event.preventDefault();
   }
 
@@ -78,7 +88,7 @@ class RoomForm extends React.Component {
           <div className="panel panel-default">
             <div className="panel-heading">{ edit ? 'Ustawienia pokoju' : 'Dodaj nowy pokój' }</div>
             <div className="panel-body">
-              <form className="form">
+              <form className="form" onSubmit={this.handleSubmit}>
 
                 <div className="form-group">
                   <label className="control-label" htmlFor="roomName">Nazwa</label>
@@ -101,12 +111,12 @@ class RoomForm extends React.Component {
                 <div className="form-group">
                   { edit ? (
                     <div style={{textAlign: 'right', float: 'right'}}>
-                      <button className="btn btn-danger">Usuń</button>
+                      <button className="btn btn-danger" onClick={this.handleDelete}>Usuń</button>
                     </div>
                   ) : ''}
                   <div style={{textAlign: 'center'}}>
                     <button type="submit" className="btn btn-primary">Zapisz</button>&nbsp;
-                    <button className="btn btn-default">Anuluj</button>
+                    <button className="btn btn-default" onClick={this.handleCancel}>Anuluj</button>
                   </div>
                 </div>
               </form>
