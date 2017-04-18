@@ -11,13 +11,13 @@ export function fetchEntity(model, id, params = {}) {
 }
 
 export function createEntity(model, data = {}) {
-  return createRecord(model, model, data)
+  return createRecord(model, `/${model}/`, data)
 }
 
 export function updateEntity(model, id, data = {}) {
-  return updateRecord(model, id, `${model}/${id}`, data)
+  return updateRecord(model, id, `/${model}/${id}`, data)
 }
 
 export function deleteEntity(model, id) {
-  return deleteRecord(model, id, `${model}/${id}`)
+  return deleteRecord(model, id, `/${model}/${id}`)
 }
