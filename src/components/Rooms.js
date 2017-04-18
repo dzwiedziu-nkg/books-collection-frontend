@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Tile from './basic/Tile';
 import Tiles from './basic/Tiles';
 
@@ -11,30 +11,24 @@ class Room extends React.Component {
     edit: PropTypes.bool
   };
 
-  static contextTypes = {
-    router: PropTypes.shape({
-      history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-        replace: PropTypes.func.isRequired
-      }).isRequired,
-      staticContext: PropTypes.object
-    }).isRequired
-  };
-
   constructor(props) {
     super(props);
+    this.state = { redirect: false };
     this.handleEditClick = this.handleEditClick.bind(this);
   }
 
   handleEditClick(event) {
-    const { id } = this.props.data;
-    const { history } = this.context.router;
-    history.push(`/${id}/edit/`);
+    this.setState({redirect: true});
   }
 
   render() {
     const { data, width, edit } = this.props;
     const { id, name } = data;
+
+    if (this.state.redirect) {
+      return (<Redirect to={`/${id}/edit/`} push={true} />);
+    }
+
     if (name === '{add}') {
       return (
         <Tile color='silver' width={width}>
