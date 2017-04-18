@@ -27,6 +27,9 @@ class Breadcrumb extends React.Component {
     if ('room' in this.props && !this.props.room.isLoading) {
       crumbs[1] = {to: `/${this.props.room.data.id}/`, title: this.props.room.data.name};
     }
+    if (this.props.edit) {
+      crumbs[crumbs.length] = {to: '', title: 'Edycja'};
+    }
 
     let children = [];
     let last = crumbs.length - 1;
@@ -47,13 +50,16 @@ function mapStateToProps(state, ownProps) {
   let r = {};
   let pathname = state.routing.location.pathname;
   let math = matchPath(pathname, {path: '/:room/'});
+  let mathEdit = matchPath(pathname, {path: '/:room/edit'});
 
-  if (math != null) {
-    if ('room' in math.params) {
+  if (math !== null) {
+    if ('room' in math.params && math.params.room !== 'add') {
       let room = math.params.room;
       r['room'] = select(actions.fetchEntity('rooms', room), state.models);
     }
   }
+
+  r['edit'] = mathEdit !== null;
   return r;
 }
 

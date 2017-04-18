@@ -6,6 +6,7 @@ import { ConnectedRouter} from 'react-router-redux'
 import { Route, IndexRoute, Switch } from 'react-router';
 import App from './App';
 import Rooms from './Rooms';
+import RoomForm from './RoomForm';
 import Furniture from './Furniture';
 import Breadcrumb from './Breadcrumb';
 
@@ -14,8 +15,12 @@ const Root = ({ store, history }) => (
     <ConnectedRouter history={history} >
       <App>
         <Breadcrumb/>
-        <Route exact path="/" component={Rooms}/>
-        <Route path="/:room/" component={Furniture}/>
+        <Switch>
+          <Route exact path="/" component={Rooms}/>
+          <Route path="/add/" component={RoomForm}/>
+          <Route path="/:room/edit/" component={RoomForm}/>
+          <Route path="/:room/" component={Furniture}/>
+        </Switch>
       </App>
     </ConnectedRouter>
   </Provider>
