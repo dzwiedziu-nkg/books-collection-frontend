@@ -9,12 +9,14 @@ import Rooms from './Rooms';
 import RoomForm from './RoomForm';
 import Furniture from './Furniture';
 import Breadcrumb from './Breadcrumb';
+import Notify from "./Notify";
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
     <ConnectedRouter history={history} >
       <App>
         <Breadcrumb/>
+        <Notify/>
         <Switch>
           <Route exact path="/" component={Rooms}/>
           <Route path="/add/" component={RoomForm}/>
