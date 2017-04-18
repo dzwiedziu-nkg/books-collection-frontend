@@ -9,27 +9,24 @@ import { loadConfig } from '../actions/config';
 
 class App extends React.Component {
   componentWillMount() {
-    const { configJson, dispatch } = this.props;
-    if (configJson.needsFetch) {
-      dispatch(configJson.fetch)
-    }
+    const { configJson } = this.props;
     this.loadConfigIfNeed(configJson);
   }
 
   componentWillReceiveProps(nextProps) {
     const { configJson } = nextProps;
-    const { dispatch } = this.props;
-    if (configJson.needsFetch) {
-      dispatch(configJson.fetch);
-    }
     this.loadConfigIfNeed(configJson);
   }
 
   // TODO: should be load via ApiCall method and parsed by callback after ApiCall success
   loadConfigIfNeed(configJson) {
-    const { config, loadConfig } = this.props;
-    if (config.isLoading && !configJson.isLoading) {
-      loadConfig(configJson.data);
+    const { dispatch, config, loadConfig } = this.props;
+    if (config.isLoading) {
+      if (!configJson.isLoading) {
+        loadConfig(configJson.data);
+      } else if (configJson.needsFetch) {
+        dispatch(configJson.fetch);
+      }
     }
   }
 
