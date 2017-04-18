@@ -7,19 +7,24 @@ import Tiles from './basic/Tiles';
 class Room extends React.Component {
   static propTypes = {
     width: PropTypes.number,
-    data: PropTypes.object
+    data: PropTypes.object,
+    edit: PropTypes.bool
   };
 
   render() {
-    const { data, width } = this.props;
+    const { data, width, edit } = this.props;
     const { id, name } = data;
     if (name === '{add}') {
       return (
-        <Tile color='silver' width={width}><h2><Link to={`/add/`}><span className="glyphicon glyphicon-plus-sign"/></Link></h2></Tile>
+        <Tile color='silver' width={width}>
+          <h2><Link to={`/add/`}><span className="glyphicon glyphicon-plus-sign"/></Link></h2>
+        </Tile>
       );
     } else {
       return (
-        <Tile color='silver' width={width}><h2><Link to={`/${id}/`}>{name}</Link></h2></Tile>
+        <Tile color='silver' width={width} edit={edit}>
+          <h2><Link to={`/${id}/`}>{name}</Link></h2>
+        </Tile>
       );
     }
   }

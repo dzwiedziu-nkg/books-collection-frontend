@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EditButton from './EditButton';
 
 export default class Tile extends React.Component {
   static propTypes = {
     color: PropTypes.string,
     children: PropTypes.node,
-    width: PropTypes.number
+    width: PropTypes.number,
+    edit: PropTypes.bool,
+    onEditClick: PropTypes.func
   };
 
   static defaultProps = {
     color: 'silver',
-    width: 1
+    width: 1,
+    edit: false,
+    onEditClick: () => {}
   };
 
   render() {
-    const { children, color, width } = this.props;
+    const { children, color, width, edit, onEditClick } = this.props;
 
     const squareStyle = {
       float: 'left',
@@ -46,9 +51,19 @@ export default class Tile extends React.Component {
       width: '100%'
     };
 
+    const style = {
+      position: 'absolute',
+      width: '100%',
+      paddingTop: '15px',
+      paddingRight: '15px'
+    };
+
     return (
       <div className={`col-xs-${width}`}>
         <div style={squareStyle}>
+          <div style={style}>
+            <EditButton visible={edit} active={true} onEditClick={onEditClick}/>
+          </div>
           <div style={contentStyle}>
             <div style={tableStyle}>
               <div style={tableCellStyle}>
