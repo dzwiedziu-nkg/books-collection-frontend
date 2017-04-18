@@ -11,6 +11,27 @@ class Room extends React.Component {
     edit: PropTypes.bool
   };
 
+  static contextTypes = {
+    router: PropTypes.shape({
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+        replace: PropTypes.func.isRequired
+      }).isRequired,
+      staticContext: PropTypes.object
+    }).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    this.handleEditClick = this.handleEditClick.bind(this);
+  }
+
+  handleEditClick(event) {
+    const { id } = this.props.data;
+    const { history } = this.context.router;
+    history.push(`/${id}/edit/`);
+  }
+
   render() {
     const { data, width, edit } = this.props;
     const { id, name } = data;
@@ -22,7 +43,7 @@ class Room extends React.Component {
       );
     } else {
       return (
-        <Tile color='silver' width={width} edit={edit}>
+        <Tile color='silver' width={width} edit={edit} onEditClick={this.handleEditClick}>
           <h2><Link to={`/${id}/`}>{name}</Link></h2>
         </Tile>
       );
