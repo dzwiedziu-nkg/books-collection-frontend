@@ -106,10 +106,6 @@ class RoomForm extends React.Component {
       const { pending, error, response } = action;
       const done = ('error' in action && error !== null) || ('response' in action && response !== null);
       let ok = done && (!('error' in action) || error === null);
-      // TODO: modify ApiClient to support 204 as success of delete
-      if (this.state.action === 'delete' && done && !ok && 'message' in error && 'stack' in error && error.message === "Unexpected end of JSON input" && error.stack === "SyntaxError: Unexpected end of JSON input") {
-        ok = true;
-      }
       return { pending, done, ok, error, response };
     }
     return { pending: false, done: false, ok: false };
@@ -130,7 +126,6 @@ class RoomForm extends React.Component {
           text = `Usunięto pokój o nazwie: ${name}`;
         }
         dispatch(setNotify(text, "success"));
-        dispatch(clearModelData('rooms')); // TODO: remove after modify ApiClient to support 204 as success of delete
       }
     }
   }
