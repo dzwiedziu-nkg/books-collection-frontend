@@ -5,9 +5,8 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter} from 'react-router-redux'
 import { Route, IndexRoute, Switch } from 'react-router';
 import App from './App';
-import Rooms from './Rooms';
+import { Rooms, Furniture }  from './Models';
 import RoomForm from './RoomForm';
-import Furniture from './Furniture';
 import Breadcrumb from './Breadcrumb';
 import Notify from "./Notify";
 
