@@ -10,6 +10,9 @@ class CrudCollection extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     cols: PropTypes.number,
+    parentName: PropTypes.string,
+    parentField: PropTypes.string,
+    parentId: PropTypes.number,
     prefix: PropTypes.string
   };
 
@@ -18,17 +21,27 @@ class CrudCollection extends React.Component {
   };
 
   componentWillMount() {
-    const { model, dispatch } = this.props;
+    const { model, parent, dispatch, hasParent } = this.props;
+
     if (model.needsFetch) {
       dispatch(model.fetch)
+    }
+
+    if (hasParent && parent.needsFetch) {
+      dispatch(parent.fetch)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { model } = nextProps;
-    const { dispatch } = this.props;
+    const { model, parent } = nextProps;
+    const { dispatch, hasParent } = this.props;
+
     if (model.needsFetch) {
       dispatch(model.fetch);
+    }
+
+    if (hasParent && parent.needsFetch) {
+      dispatch(parent.fetch)
     }
   }
 
@@ -41,16 +54,32 @@ class CrudCollection extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { name, cols } = ownProps;
-  const adds = {};
+  const { name, cols, parentName, parentId, parentField } = ownProps;
+  const hasParent = typeof parentName !== 'undefined';
+  let adds = { hasParent };
+  let opts = {};
+
+  if (hasParent) {
+    adds['parent'] = select(actions.fetchEntity(parentName, parentId), state.models);
+    opts[parentField] = parentId;
+  }
 
   if (typeof cols === 'undefined') {
-    adds['cols'] = parseInt(state.config.ROOM_COLS, 10);
+    if (hasParent) {
+      if (adds.parent.isLoading) {
+        adds['cols'] = 1;
+      } else {
+        adds['cols'] = adds.parent.data.cols;
+      }
+    } else {
+      adds['cols'] = parseInt(state.config.ROOM_COLS, 10);
+    }
   }
+
   return {
     edit: state.mode.edit,
     config: state.config,
-    model: select(actions.fetchEntities(name), state.models),
+    model: select(actions.fetchEntities(name, opts), state.models),
     ...adds
   }
 }
