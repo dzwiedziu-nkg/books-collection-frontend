@@ -6,11 +6,16 @@ export default class Tiles extends React.Component {
     items: PropTypes.array,
     cols: PropTypes.number,
     edit: PropTypes.bool,
-    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    rendererParams: PropTypes.object
+  };
+
+  static defaultProps = {
+    rendererParams: {}
   };
 
   render() {
-    const { items, cols, renderer, edit } = this.props;
+    const { items, cols, renderer, edit, rendererParams } = this.props;
 
     let e = [];
     let row = -1;
@@ -24,7 +29,7 @@ export default class Tiles extends React.Component {
 
     for (let i = 0; i < tiles.length; i++) {
       let item = tiles[i];
-      let t = React.createElement(renderer, {data: item, width: 12/cols*item.colspan, edit});
+      let t = React.createElement(renderer, {data: item, width: 12/cols*item.colspan, edit, ...rendererParams});
       colUsed += item.colspan;
       if (colUsed > cols) {
         row++;
@@ -32,6 +37,7 @@ export default class Tiles extends React.Component {
         colUsed = item.colspan;
         pos = 0;
       }
+
       e[row][pos] = t;
       pos++;
     }

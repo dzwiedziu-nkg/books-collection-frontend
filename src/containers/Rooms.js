@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/crud';
 import { select } from 'redux-crud-store';
-import Main from '../components/Rooms';
+import Main from '../components/generics/CrudAsTiles';
 
 
 class Rooms extends React.Component {
@@ -24,9 +24,9 @@ class Rooms extends React.Component {
   render() {
     const { isLoading, data } = this.props.rooms;
     const { edit } = this.props;
-    const { ROOM_COLS } = parseInt(this.props.config);
+    const cols = parseInt(this.props.config.ROOM_COLS, 10);
 
-    return <Main isLoading={isLoading} data={data} edit={edit} cols={ROOM_COLS}/>
+    return <Main isLoading={isLoading} data={data} edit={edit} cols={cols}/>
   }
 }
 
