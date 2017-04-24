@@ -1,34 +1,63 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { select } from 'redux-crud-store';
 import { matchPath } from 'react-router'
-import * as actions from '../actions/crud';
+import { selectEntity, fetchNeeds, isSomeLoadings } from '../lib/CrudUtils'
 
+const modelToEntity = {
+  rooms: 'room',
+  furniture: 'furniture',
+  shelves: 'shelf',
+  books: 'book'
+};
+
+const paths = [
+  { path: '/:room/add/', modelNames: [], opts: { add: true } },
+  { path: '/:room/:furniture/edit/', modelNames: ['rooms', 'furniture'], opts: { edit: true } },
+  { path: '/:room/:furniture/', modelNames: ['rooms', 'furniture'], opts: {} },
+  { path: '/add/', modelNames: [], opts: { add: true } },
+  { path: '/:room/edit/', modelNames: ['rooms'], opts: { edit: true } },
+  { path: '/:room/', modelNames: ['rooms'], opts: {} }
+];
 
 class Breadcrumb extends React.Component {
   componentWillMount() {
-    const { dispatch } = this.props;
-    if ('room' in this.props && this.props.room.needsFetch) {
-      dispatch(this.props.room.fetch);
-    }
+    this.doFetchNeeds(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
+    this.doFetchNeeds(nextProps);
+  }
+
+  doFetchNeeds(props) {
     const { dispatch } = this.props;
-    if ('room' in nextProps && nextProps.room.needsFetch) {
-      dispatch(nextProps.room.fetch);
-    }
+    const { room, furniture, shelf, book } = props;
+    fetchNeeds(dispatch, [room, furniture, shelf, book]);
   }
 
   render() {
+    const { room, furniture, shelf, book } = this.props;
+
     let crumbs = [];
     crumbs[0] = {to: '/', title: 'Home'};
-    if ('room' in this.props && !this.props.room.isLoading) {
-      crumbs[1] = {to: `/${this.props.room.data.id}/`, title: this.props.room.data.name};
+    if (!isSomeLoadings([room, furniture, shelf, book])) {
+      if ('room' in this.props) {
+        crumbs[1] = {to: `/${this.props.room.data.id}/`, title: this.props.room.data.name};
+      }
+      if ('furniture' in this.props) {
+        crumbs[2] = {
+          to: `/${this.props.room.data.id}/${this.props.furniture.data.id}/`,
+          title: this.props.furniture.data.name
+        };
+      }
     }
+
     if (this.props.edit) {
       crumbs[crumbs.length] = {to: '', title: 'Edycja'};
+    }
+
+    if (this.props.add) {
+      crumbs[crumbs.length] = {to: '', title: 'Dodaj nowy'};
     }
 
     let children = [];
@@ -48,18 +77,22 @@ class Breadcrumb extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   let r = {};
-  let pathname = state.routing.location.pathname;
-  let math = matchPath(pathname, {path: '/:room/'});
-  let mathEdit = matchPath(pathname, {path: '/:room/edit'});
+  const pathname = state.routing.location.pathname;
 
-  if (math !== null) {
-    if ('room' in math.params && math.params.room !== 'add') {
-      let room = math.params.room;
-      r['room'] = select(actions.fetchEntity('rooms', room), state.models);
+  for (let i = 0; i < paths.length; i++) {
+    const { path, modelNames, opts } = paths[i];
+    const math = matchPath(pathname, { path });
+    if (math !== null) {
+      r = { ...r, ...opts };
+      for (let j = 0; j < modelNames.length; j++) {
+        const modelName = modelNames[j];
+        const fieldName = modelToEntity[modelName];
+        const id = math.params[fieldName];
+        r[fieldName] = selectEntity(state.models, modelName, id);
+      }
+      break;
     }
   }
-
-  r['edit'] = mathEdit !== null;
   return r;
 }
 
