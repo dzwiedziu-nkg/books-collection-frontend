@@ -104,7 +104,7 @@ class RoomForm extends React.Component {
     if ('action' in this.state) {
       const action = this.props[this.state.action];
       const { pending, error, response } = action;
-      const done = ('error' in action && error !== null) || ('response' in action && response !== null);
+      const done = ('error' in action && error !== null) || ('response' in action);
       let ok = done && (!('error' in action) || error === null);
       return { pending, done, ok, error, response };
     }
