@@ -13,10 +13,10 @@ const modelToEntity = {
 
 const paths = [
   { path: '/:room/add/', modelNames: [], opts: { add: true } },
+  { path: '/:room/edit/', modelNames: ['rooms'], opts: { edit: true } },
   { path: '/:room/:furniture/edit/', modelNames: ['rooms', 'furniture'], opts: { edit: true } },
   { path: '/:room/:furniture/', modelNames: ['rooms', 'furniture'], opts: {} },
   { path: '/add/', modelNames: [], opts: { add: true } },
-  { path: '/:room/edit/', modelNames: ['rooms'], opts: { edit: true } },
   { path: '/:room/', modelNames: ['rooms'], opts: {} }
 ];
 
