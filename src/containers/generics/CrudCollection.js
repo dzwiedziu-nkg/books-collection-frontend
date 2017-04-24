@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/crud';
-import { select } from 'redux-crud-store';
 import Main from '../../components/generics/CrudAsTiles';
+import { selectEntity, selectCollection, fetchNeeds, isSomeLoadings } from '../../lib/CrudUtils'
 
 
 class CrudCollection extends React.Component {
@@ -21,33 +20,23 @@ class CrudCollection extends React.Component {
   };
 
   componentWillMount() {
-    const { model, parent, dispatch, hasParent } = this.props;
-
-    if (model.needsFetch) {
-      dispatch(model.fetch)
-    }
-
-    if (hasParent && parent.needsFetch) {
-      dispatch(parent.fetch)
-    }
+    this.doFetchNeeds(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { model, parent } = nextProps;
-    const { dispatch, hasParent } = this.props;
+    this.doFetchNeeds(nextProps);
+  }
 
-    if (model.needsFetch) {
-      dispatch(model.fetch);
-    }
-
-    if (hasParent && parent.needsFetch) {
-      dispatch(parent.fetch)
-    }
+  doFetchNeeds(props) {
+    const { dispatch } = this.props;
+    const { model, parent } = props;
+    fetchNeeds(dispatch, [model, parent]);
   }
 
   render() {
-    const { isLoading, data } = this.props.model;
+    const { data } = this.props.model;
     const { edit, prefix, cols } = this.props;
+    const isLoading = isSomeLoadings(this.props.model, this.props.parent);
 
     return <Main isLoading={isLoading} data={data} edit={edit} cols={cols} prefix={prefix}/>
   }
@@ -57,11 +46,9 @@ function mapStateToProps(state, ownProps) {
   const { name, cols, parentName, parentId, parentField } = ownProps;
   const hasParent = typeof parentName !== 'undefined';
   let adds = { hasParent };
-  let opts = {};
 
   if (hasParent) {
-    adds['parent'] = select(actions.fetchEntity(parentName, parentId), state.models);
-    opts[parentField] = parentId;
+    adds['parent'] = selectEntity(state.models, parentName, parentId);
   }
 
   if (typeof cols === 'undefined') {
@@ -79,7 +66,7 @@ function mapStateToProps(state, ownProps) {
   return {
     edit: state.mode.edit,
     config: state.config,
-    model: select(actions.fetchEntities(name, opts), state.models),
+    model: selectCollection(state.models, name, parentField, parentId),
     ...adds
   }
 }
